@@ -1,0 +1,5 @@
+# Fichier d'environnement
+.env
+
+# Dossier privé
+/private/

@@ -24,9 +24,3 @@ Chaque requête retourne un **code d’état numérique** accompagné d’une de
 | **2** | Ordinateur allumé |
 
 ---
-
-## 🌐 Base URL
-
-[text](http://localhost:8000)
-
-

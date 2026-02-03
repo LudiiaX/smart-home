@@ -13,6 +13,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          echo "API_TOKEN=${{ secrets.API_TOKEN }}" > .env
+          echo "DEVICE_ID=${{ secrets.DEVICE_ID }}" >> .env
+          echo "DEVICE_IP=${{ secrets.DEVICE_IP }}" >> .env
+          echo "LOCAL_KEY=${{ secrets.LOCAL_KEY }}" >> .env
+
       - name: Setup venv
         run: |
           python3 -m venv venv

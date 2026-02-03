@@ -8,6 +8,7 @@ from models.prise import Prise, PriseState
 load_dotenv()
 API_TOKEN = os.getenv("API_TOKEN")
 
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,

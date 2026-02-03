@@ -2,7 +2,7 @@
 # API de Gestion d'État de Prise / Ordinateur
 
 Cette API permet de **consulter et piloter l’état d’une prise électrique et de l’ordinateur qui y est connecté**.  
-Elle expose des endpoints simples pour **on**, **off** et **status** du système.
+Elle expose des endpoints simples pour **on**, **off** et **status**.
 
 ---
 

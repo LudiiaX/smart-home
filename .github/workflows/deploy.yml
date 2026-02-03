@@ -1,0 +1,27 @@
+name: Deploy FastAPI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup venv
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restart API
+        run: |
+          pkill -f "uvicorn app.main:app" || true
+          source venv/bin/activate
+          nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 &

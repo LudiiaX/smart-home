@@ -7,7 +7,7 @@ headers = {
     "Content-Type": "application/json"
 }
 
-API_URL = "http://127.0.0.1:8000/status"
+API_URL = "http://192.168.1.23:8000/status"
 
 r = requests.get(API_URL, headers=headers)
 

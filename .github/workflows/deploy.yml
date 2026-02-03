@@ -27,8 +27,8 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Restart API
+      - name: Deploy FastAPI
         run: |
-          pkill -f "uvicorn api:app" || true
-          source venv/bin/activate
-          nohup uvicorn api:app --host 0.0.0.0 --port 8000 &
+          cd /home/mathis/api
+          chmod +x start_api.sh
+          ./start_api.sh

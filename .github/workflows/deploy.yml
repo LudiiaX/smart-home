@@ -38,5 +38,5 @@ jobs:
 
       - name: Restart FastAPI service
         run: |
-          systemctl daemon-reload
-          systemctl restart fastapi.service
+          systemctl --user daemon-reload
+          systemctl --user restart fastapi.service

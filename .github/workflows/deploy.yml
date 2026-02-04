@@ -16,7 +16,8 @@ jobs:
       - name: Sync code to production folder
         run: |
           mkdir -p /home/mathis/api
-          rsync -av --delete ./ /home/mathis/api/
+          rm -rf /home/mathis/api/*
+          cp -r ./* /home/mathis/api/
 
       - name: Create .env file
         run: |

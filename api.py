@@ -12,7 +12,7 @@ API_TOKEN = os.getenv("API_TOKEN")
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1"],
+    allow_origins=["http://127.0.0.1", "http://192.168.1.19"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

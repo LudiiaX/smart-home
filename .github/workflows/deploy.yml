@@ -10,25 +10,32 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Sync code to production folder
+        run: |
+          mkdir -p /home/mathis/api
+          rsync -av --delete ./ /home/mathis/api/
 
       - name: Create .env file
         run: |
-          echo "API_TOKEN=${{ secrets.API_TOKEN }}" > .env
-          echo "DEVICE_ID=${{ secrets.DEVICE_ID }}" >> .env
-          echo "DEVICE_IP=${{ secrets.DEVICE_IP }}" >> .env
-          echo "LOCAL_KEY=${{ secrets.LOCAL_KEY }}" >> .env
+          echo "API_TOKEN=${{ secrets.API_TOKEN }}" > /home/mathis/api/.env
+          echo "DEVICE_ID=${{ secrets.DEVICE_ID }}" >> /home/mathis/api/.env
+          echo "DEVICE_IP=${{ secrets.DEVICE_IP }}" >> /home/mathis/api/.env
+          echo "LOCAL_KEY=${{ secrets.LOCAL_KEY }}" >> /home/mathis/api/.env
 
-      - name: Setup venv
+      - name: Setup venv & deps
         run: |
-          python3 -m venv venv
+          cd /home/mathis/api
+          if [ ! -d "venv" ]; then
+            python3 -m venv venv
+          fi
           source venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Deploy FastAPI
+      - name: Restart FastAPI service
         run: |
-          cd /home/mathis/api
-          chmod +x start_api.sh
-          ./start_api.sh
+          systemctl --user daemon-reload
+          systemctl --user restart fastapi.service

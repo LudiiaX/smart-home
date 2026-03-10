@@ -3,7 +3,9 @@
 
 
 brouillon.txt
-
+/src/api-test.py
+/src/database/init_db.py
 
 # Dossier privé
 /private/
+/test/

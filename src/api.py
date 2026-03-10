@@ -1,12 +1,13 @@
 from fastapi import Depends, FastAPI ,Header ,HTTPException
-from dotenv import load_dotenv
-import os
+
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from models.prise import Prise, PriseState
 
-load_dotenv()
-API_TOKEN = os.getenv("API_TOKEN")
+import auth
+
+from security import verify_token
+
 
 
 app = FastAPI()
@@ -18,6 +19,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.route)
+
 prise = Prise("prise_bureau")
 
 try:
@@ -27,20 +30,12 @@ except Exception as e:
 
 
 
-def auth(x_api_key: str = Header(...)):
-    if x_api_key != API_TOKEN:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-
 class StatusResponse(BaseModel):
     status: int
     message: str
 
-@app.get("/status",
-         response_model=StatusResponse,
-         dependencies=[Depends(auth)]
-        )
-def get_status():
+@app.get("/status", response_model=StatusResponse)
+def get_status(payload: dict = Depends(verify_token)):
     try :
         current_status = prise.get_status()
         return {"status": current_status.value, "message": current_status.message}
@@ -52,11 +47,8 @@ def get_status():
 class SetStatusRequest(BaseModel):
     state: int
 
-@app.post("/status",
-            response_model=StatusResponse,
-            dependencies=[Depends(auth)]
-            )
-def set_status(body: SetStatusRequest):
+@app.post("/status", response_model=StatusResponse)
+def set_status(body: SetStatusRequest, payload: dict = Depends(verify_token)):
     print('test', body.state)
     try:
         desired_status = PriseState(body.state)
